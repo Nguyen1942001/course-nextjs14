@@ -1,0 +1,4 @@
+- Cấu trúc dự án: -> chương 4 - video 4
+    + File AclGuard.tsx: Kiểm tra quyền của user
+    + File AuthGuard.tsx: Kiểm tra đã đăng nhập chưa
+    + File GuestGuard.tsx: Chặn truy cập vào login, quên mật khẩu khi đã có access token
