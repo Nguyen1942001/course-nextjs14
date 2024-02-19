@@ -1,5 +1,7 @@
 'use client';
 import Head from 'next/head';
+import CustomTextField from 'src/components/text-field';
+import Box from '@mui/material/Box';
 
 export default function Home() {
     return (
@@ -19,7 +21,13 @@ export default function Home() {
                     href="/favicon.ico"
                 />
             </Head>
-            <h1>Hello world!</h1>
+
+            <Box sx={{ margin: 6, width: '200px' }}>
+                <CustomTextField
+                    id="filled-basic"
+                    label="Nguyen"
+                />
+            </Box>
         </>
     );
 }
