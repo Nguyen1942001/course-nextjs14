@@ -32,6 +32,10 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
                 display: 'none',
             },
 
+            '&:placeholder': {
+                color: 'red',
+            },
+
             // Custom cho thẻ input
             '.MuiInputBase-input': {
                 padding: '8px 10px',
@@ -73,6 +77,15 @@ const TextFieldStyled = styled(TextField)<TextFieldProps>(({ theme }) => {
             },
             '& .MuiInputAdornment-root': {
                 marginTop: `0 !important`,
+            },
+        },
+        '& .MuiFormHelperText-root': {
+            lineHeight: 1.154,
+            margin: theme.spacing(1, 0, 0),
+            color: theme.palette.text.secondary,
+            fontSize: theme.typography.body2.fontSize,
+            '&.Mui-error': {
+                color: theme.palette.error.main,
             },
         },
     };
