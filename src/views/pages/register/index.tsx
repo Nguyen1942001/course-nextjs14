@@ -4,15 +4,7 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 
 import CssBaseline from '@mui/material/CssBaseline';
-import {
-    Button,
-    Checkbox,
-    Container,
-    FormControlLabel,
-    Grid,
-    IconButton,
-    InputAdornment,
-} from '@mui/material';
+import { Button, IconButton, InputAdornment } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CustomTextField from 'src/components/text-field';
@@ -21,14 +13,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { PASSWORD_REG } from 'src/configs/regex';
 import { useState } from 'react';
-import IconifyIcon from 'src/components/Icon';
 import Icon from 'src/components/Icon';
 import Image from 'next/image';
 import { useTheme } from '@mui/material/styles';
 import RegisterDark from '/public/images/register-dark.png';
 import RegisterLight from '/public/images/register-light.png';
-import LoginLight from '*.png';
-import LoginDark from '*.png';
 
 type TProps = {};
 type TDefaultValue = {
@@ -71,10 +60,7 @@ const RegisterPage: NextPage<TProps> = () => {
         control,
         formState: { errors },
     } = useForm({
-        defaultValues: {
-            email: '',
-            password: '',
-        },
+        defaultValues: defaultValue,
         mode: 'onBlur',
         resolver: yupResolver(schema),
     });
@@ -274,7 +260,17 @@ const RegisterPage: NextPage<TProps> = () => {
                         >
                             <Typography>{'Do you have already account?'}</Typography>
 
-                            <Link href="/login">{'Login'}</Link>
+                            <Link
+                                style={{
+                                    color:
+                                        theme.palette.mode === 'light'
+                                            ? theme.palette.common.black
+                                            : theme.palette.common.white,
+                                }}
+                                href="/login"
+                            >
+                                {'Login'}
+                            </Link>
                         </Box>
 
                         {/*  Login google, facebook  */}

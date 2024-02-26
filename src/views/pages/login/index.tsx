@@ -3,15 +3,7 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
 import CssBaseline from '@mui/material/CssBaseline';
-import {
-    Button,
-    Checkbox,
-    Container,
-    FormControlLabel,
-    Grid,
-    IconButton,
-    InputAdornment,
-} from '@mui/material';
+import { Button, Checkbox, FormControlLabel, IconButton, InputAdornment } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CustomTextField from 'src/components/text-field';
@@ -20,20 +12,27 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { PASSWORD_REG } from 'src/configs/regex';
 import { useState } from 'react';
-import IconifyIcon from 'src/components/Icon';
 import Icon from 'src/components/Icon';
 import Image from 'next/image';
 import { useTheme } from '@mui/material/styles';
 import LoginDark from '/public/images/login-dark.png';
 import LoginLight from '/public/images/login-light.png';
-import GoogleSvg from '/public/svgs/google.svg';
-import FacebookSvg from '/public/svgs/facebook.svg';
 
 type TProps = {};
+type TDefaultValue = {
+    email: string;
+    password: string;
+};
 
+// 6p40s
 const LoginPage: NextPage<TProps> = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isRemember, setIsRemember] = useState(true);
+
+    const defaultValues: TDefaultValue = {
+        email: '',
+        password: '',
+    };
 
     // Theme
     const theme = useTheme();
@@ -54,10 +53,7 @@ const LoginPage: NextPage<TProps> = () => {
         control,
         formState: { errors },
     } = useForm({
-        defaultValues: {
-            email: '',
-            password: '',
-        },
+        defaultValues: defaultValues,
         mode: 'onBlur',
         resolver: yupResolver(schema),
     });
@@ -237,7 +233,17 @@ const LoginPage: NextPage<TProps> = () => {
                         >
                             <Typography>{"Don't have an account?"}</Typography>
 
-                            <Link href="/register">{'Sign Up'}</Link>
+                            <Link
+                                style={{
+                                    color:
+                                        theme.palette.mode === 'light'
+                                            ? theme.palette.common.black
+                                            : theme.palette.common.white,
+                                }}
+                                href="/register"
+                            >
+                                {'Register'}
+                            </Link>
                         </Box>
 
                         {/*  Login google, facebook  */}
