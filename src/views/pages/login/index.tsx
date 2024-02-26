@@ -11,12 +11,15 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { PASSWORD_REG } from 'src/configs/regex';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Icon from 'src/components/Icon';
 import Image from 'next/image';
 import { useTheme } from '@mui/material/styles';
 import LoginDark from '/public/images/login-dark.png';
 import LoginLight from '/public/images/login-light.png';
+
+// ** Hooks
+import { useAuth } from 'src/hooks/useAuth';
 
 type TProps = {};
 type TDefaultValue = {
@@ -28,6 +31,9 @@ type TDefaultValue = {
 const LoginPage: NextPage<TProps> = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isRemember, setIsRemember] = useState(true);
+
+    // Context
+    const { login } = useAuth();
 
     const defaultValues: TDefaultValue = {
         email: '',
@@ -58,9 +64,10 @@ const LoginPage: NextPage<TProps> = () => {
         resolver: yupResolver(schema),
     });
 
-    console.log('errors', { errors });
-
     const onSubmit = (data: { email: string; password: string }) => {
+        if (!Object.keys(errors)?.length) {
+            login({ ...data, rememberMe: isRemember }); // handleLogin (file AuthContext.tsx)
+        }
         console.log('data', { data, errors });
     };
 
