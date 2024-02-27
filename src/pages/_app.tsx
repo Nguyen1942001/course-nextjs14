@@ -76,7 +76,9 @@ export default function App(props: ExtendedAppProps) {
 
     const { settings } = useSettings();
 
-    // Variables
+    // ****************   Variables   ****************
+
+    // Component.getLayout: getLayout nằm trong file next.d.ts, return về ReactNode
     const getLayout = Component.getLayout ?? ((page) => <UserLayout>{page}</UserLayout>);
 
     const setConfig = Component.setConfig ?? undefined;
