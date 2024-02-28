@@ -1,14 +1,7 @@
 import * as React from 'react';
-import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { NextPage } from 'next';
 import Box, { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-
-const drawerWidth: number = 240;
-
-interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
-}
 
 type TProps = {
     children: React.ReactNode;

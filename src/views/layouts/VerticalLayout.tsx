@@ -6,8 +6,15 @@ import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { mainListItems, secondaryListItems } from './listItems';
 import { NextPage } from 'next';
+import ListSubheader from '@mui/material/ListSubheader';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { Collapse } from '@mui/material';
+import IconifyIcon from 'src/components/Icon';
+import { VerticalItems } from 'src/configs/layout';
+import ListVerticalLayout from 'src/views/layouts/ListVerticalLayout';
 
 const drawerWidth: number = 240;
 
@@ -63,11 +70,8 @@ const VerticalLayout: NextPage<TProps> = ({ open, toggleDrawer }) => {
                 <IconButton onClick={toggleDrawer}>{/*<ChevronLeftIcon />*/}</IconButton>
             </Toolbar>
             <Divider />
-            <List component="nav">
-                {mainListItems}
-                <Divider sx={{ my: 1 }} />
-                {secondaryListItems}
-            </List>
+
+            <ListVerticalLayout />
         </Drawer>
     );
 };
