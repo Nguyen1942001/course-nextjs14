@@ -6,20 +6,39 @@ import IconifyIcon from 'src/components/Icon';
 import { Collapse } from '@mui/material';
 import List from '@mui/material/List';
 import * as React from 'react';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { VerticalItems } from 'src/configs/layout';
 
-type TProps = {};
+type TProps = {
+    open: boolean;
+};
 
-const RecursiveListItems = ({ items, level }: { items: any; level: number }) => {
-    // openItems là một object với khóa là chuỗi và giá trị là boolean
-    const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
+type TListItems = {
+    items: any;
+    level: number;
+    openItems: { [key: string]: boolean };
+    setOpenItems: React.Dispatch<
+        React.SetStateAction<{
+            [key: string]: boolean;
+        }>
+    >;
+    disabled: boolean;
+};
 
+const RecursiveListItems: NextPage<TListItems> = ({
+    items,
+    level,
+    openItems,
+    setOpenItems,
+    disabled,
+}) => {
     const handleClick = (title: string) => {
-        setOpenItems((prev) => ({
-            ...prev,
-            [title]: !prev[title],
-        }));
+        if (!disabled) {
+            setOpenItems((prev) => ({
+                ...prev,
+                [title]: !prev[title],
+            }));
+        }
     };
 
     return (
@@ -41,7 +60,7 @@ const RecursiveListItems = ({ items, level }: { items: any; level: number }) => 
                                 <IconifyIcon icon={item.icon} />
                             </ListItemIcon>
 
-                            <ListItemText primary={item.title} />
+                            {!disabled && <ListItemText primary={item.title} />}
 
                             {item?.childrens && item.childrens.length > 0 && (
                                 <>
@@ -69,6 +88,9 @@ const RecursiveListItems = ({ items, level }: { items: any; level: number }) => 
                                     <RecursiveListItems
                                         items={item.childrens}
                                         level={level + 1}
+                                        openItems={openItems}
+                                        setOpenItems={setOpenItems}
+                                        disabled={disabled}
                                     />
                                 </Collapse>
                             </>
@@ -80,7 +102,16 @@ const RecursiveListItems = ({ items, level }: { items: any; level: number }) => 
     );
 };
 
-const ListVerticalLayout: NextPage<TProps> = () => {
+const ListVerticalLayout: NextPage<TProps> = ({ open }) => {
+    // openItems là một object với khóa là chuỗi và giá trị là boolean
+    const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
+
+    useEffect(() => {
+        if (!open) {
+            setOpenItems({});
+        }
+    }, [open]);
+
     return (
         <List
             sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
@@ -88,8 +119,11 @@ const ListVerticalLayout: NextPage<TProps> = () => {
             aria-labelledby="nested-list-subheader"
         >
             <RecursiveListItems
+                disabled={!open}
                 items={VerticalItems}
                 level={1}
+                openItems={openItems}
+                setOpenItems={setOpenItems}
             />
         </List>
     );

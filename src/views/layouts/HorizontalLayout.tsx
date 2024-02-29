@@ -23,6 +23,11 @@ const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor:
+        theme.palette.mode === 'light'
+            ? theme.palette.customColors.lightPaperBg
+            : theme.palette.customColors.darkPaperBg,
+    color: theme.palette.primary.main,
     transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -46,6 +51,7 @@ const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer }) => {
             <Toolbar
                 sx={{
                     pr: '30px', // keep right padding when drawer closed
+                    margin: '0 20px',
                 }}
             >
                 <IconButton
