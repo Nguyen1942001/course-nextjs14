@@ -67,7 +67,9 @@ const VerticalLayout: NextPage<TProps> = ({ open, toggleDrawer }) => {
                     px: [1],
                 }}
             >
-                <IconButton onClick={toggleDrawer}>{/*<ChevronLeftIcon />*/}</IconButton>
+                <IconButton onClick={toggleDrawer}>
+                    <IconifyIcon icon="icon-park:left" />
+                </IconButton>
             </Toolbar>
             <Divider />
 

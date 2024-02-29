@@ -45,7 +45,7 @@ const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer }) => {
         >
             <Toolbar
                 sx={{
-                    pr: '24px', // keep right padding when drawer closed
+                    pr: '30px', // keep right padding when drawer closed
                 }}
             >
                 <IconButton

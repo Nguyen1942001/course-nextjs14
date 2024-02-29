@@ -6,13 +6,11 @@ import IconifyIcon from 'src/components/Icon';
 import { Collapse } from '@mui/material';
 import List from '@mui/material/List';
 import * as React from 'react';
-import { VerticalItems } from 'src/configs/layout';
 import { Fragment, useState } from 'react';
-import VerticalLayout from 'src/views/layouts/VerticalLayout';
+import { VerticalItems } from 'src/configs/layout';
 
 type TProps = {};
 
-// 10p
 const RecursiveListItems = ({ items, level }: { items: any; level: number }) => {
     // openItems là một object với khóa là chuỗi và giá trị là boolean
     const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
@@ -29,16 +27,36 @@ const RecursiveListItems = ({ items, level }: { items: any; level: number }) => 
             {items?.map((item: any) => {
                 return (
                     <Fragment key={item.title}>
-                        <ListItemButton onClick={item.childrens && handleClick(item.title)}>
-                            <ListItemIcon
-                                sx={{
-                                    paddingLeft: `${level * 20}px`,
-                                }}
-                            >
+                        <ListItemButton
+                            sx={{
+                                padding: `8px 10px 8px ${level * 20}px`,
+                            }}
+                            onClick={() => {
+                                if (item.childrens) {
+                                    handleClick(item.title);
+                                }
+                            }}
+                        >
+                            <ListItemIcon>
                                 <IconifyIcon icon={item.icon} />
                             </ListItemIcon>
 
                             <ListItemText primary={item.title} />
+
+                            {item?.childrens && item.childrens.length > 0 && (
+                                <>
+                                    {openItems[item.title] ? (
+                                        <IconifyIcon
+                                            icon="ic:sharp-expand-more"
+                                            style={{
+                                                transform: 'rotate(180deg)',
+                                            }}
+                                        />
+                                    ) : (
+                                        <IconifyIcon icon="ic:sharp-expand-more" />
+                                    )}
+                                </>
+                            )}
                         </ListItemButton>
 
                         {item.childrens && item.childrens.length > 0 && (
