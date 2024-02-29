@@ -36,8 +36,8 @@ const LoginPage: NextPage<TProps> = () => {
     const { login } = useAuth();
 
     const defaultValues: TDefaultValue = {
-        email: '',
-        password: '',
+        email: 'admin@gmail.com',
+        password: '123456789Kha@',
     };
 
     // Theme

@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import { NextPage } from 'next';
 import IconifyIcon from 'src/components/Icon';
+import UserDropdown from 'src/components/user-dropdown';
 
 const drawerWidth: number = 240;
 
@@ -80,15 +81,17 @@ const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHideMenu }) 
                     Dashboard
                 </Typography>
 
+                <UserDropdown />
+
                 {/*  Icon notification  */}
-                <IconButton color="inherit">
-                    <Badge
-                        badgeContent={4}
-                        color="primary"
-                    >
-                        <IconifyIcon icon="mingcute:notification-fill" />
-                    </Badge>
-                </IconButton>
+                {/*<IconButton color="inherit">*/}
+                {/*    <Badge*/}
+                {/*        badgeContent={4}*/}
+                {/*        color="primary"*/}
+                {/*    >*/}
+                {/*        <IconifyIcon icon="mingcute:notification-fill" />*/}
+                {/*    </Badge>*/}
+                {/*</IconButton>*/}
             </Toolbar>
         </AppBar>
     );
