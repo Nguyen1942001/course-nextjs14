@@ -48,7 +48,7 @@ const RecursiveListItems: NextPage<TListItems> = ({
                     <Fragment key={item.title}>
                         <ListItemButton
                             sx={{
-                                padding: `8px 10px 8px ${level * 20}px`,
+                                padding: `8px 10px 8px ${level * (level === 1 ? 28 : 20)}px`,
                             }}
                             onClick={() => {
                                 if (item.childrens) {

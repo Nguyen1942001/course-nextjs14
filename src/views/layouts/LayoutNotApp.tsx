@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,24 +12,15 @@ type TProps = {
     children: React.ReactNode;
 };
 
-const UserLayout: NextPage<TProps> = ({ children }) => {
-    const [open, setOpen] = React.useState(true);
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
-
+const LayoutNotApp: NextPage<TProps> = ({ children }) => {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
 
-            <VerticalLayout
-                open={open}
-                toggleDrawer={toggleDrawer}
-            />
-
             <HorizontalLayout
-                open={open}
-                toggleDrawer={toggleDrawer}
+                open={false}
+                toggleDrawer={() => {}}
+                isHideMenu
             />
 
             <Box
@@ -55,4 +47,4 @@ const UserLayout: NextPage<TProps> = ({ children }) => {
     );
 };
 
-export default UserLayout;
+export default LayoutNotApp;
