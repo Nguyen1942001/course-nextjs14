@@ -8,7 +8,10 @@ export type LoginParams = {
 
 export type UserDataType = {
     id: number;
-    role: string;
+    role: {
+        name: string;
+        permission: string[];
+    };
     email: string;
     firstName: string;
     middleName: string;
