@@ -20,3 +20,6 @@ export default Login;
  * getLayout là biến nằm ở file src/pages/_app.tsx
  */
 Login.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>;
+
+// Trang này không cần đăng nhập vẫn vào được
+Login.guestGuard = true;

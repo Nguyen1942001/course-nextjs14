@@ -12,7 +12,7 @@ import authConfig from 'src/configs/auth';
 
 // ** Types
 import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types';
-import { loginAuth } from 'src/service/auth';
+import { loginAuth, logoutAuth } from 'src/service/auth';
 import { CONFIG_API } from 'src/configs/api';
 import { clearLocalUserData, setLocalUserData } from 'src/helper/storage';
 
@@ -98,11 +98,13 @@ const AuthProvider = ({ children }: Props) => {
     };
 
     const handleLogout = () => {
-        setUser(null);
+        logoutAuth().then((res) => {
+            setUser(null);
 
-        // Xóa các thông tin trong local storage khi đăng xuất
-        clearLocalUserData();
-        router.push('/login');
+            // Xóa các thông tin trong local storage khi đăng xuất
+            clearLocalUserData();
+            router.replace('/login');
+        });
     };
 
     const values = {
