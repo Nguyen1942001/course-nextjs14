@@ -9,3 +9,5 @@
     + Muốn xem các thuộc tính của material ui để custom thì dùng: 'const theme = useTheme() - import từ material ui'
     + File globalStyles.ts: ghi đè css của thư viện
     + File src/theme/palette/index.ts: custom màu cho light/dark mode
+
+- File src/pages/_app.tsx: sử dụng cả server side rendering và client side rendering

@@ -21,3 +21,6 @@ export default Register;
  * getLayout là biến nằm ở file src/pages/_app.tsx
  */
 Register.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>;
+
+// Trang này không cần đăng nhập vẫn vào được
+Register.guestGuard = true;
