@@ -11,3 +11,8 @@
     + File src/theme/palette/index.ts: custom màu cho light/dark mode
 
 - File src/pages/_app.tsx: sử dụng cả server side rendering và client side rendering
+
+- Thư viện để phân quyền: casl/ability
+
+- 1 vấn đề về type trong typescript: Cần check variable chắc chắn là type đó trước khi truyền vào, nếu không có thể sẽ
+gây ra lỗi (có thể là undefined hoặc là null => sẽ bị cảnh báo)

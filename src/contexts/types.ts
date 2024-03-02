@@ -10,7 +10,7 @@ export type UserDataType = {
     id: number;
     role: {
         name: string;
-        permission: string[];
+        permissions: string[];
     };
     email: string;
     firstName: string;
