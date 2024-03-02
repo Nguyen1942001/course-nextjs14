@@ -4,10 +4,10 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import { NextPage } from 'next';
-import IconifyIcon from 'src/components/Icon';
-import UserDropdown from 'src/components/user-dropdown';
+import Icon from 'src/components/Icon';
+import ModeToggle from 'src/views/layouts/components/mode-toggle';
+import UserDropdown from 'src/views/layouts/components/user-dropdown';
 
 const drawerWidth: number = 240;
 
@@ -67,7 +67,7 @@ const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHideMenu }) 
                             ...(open && { display: 'none' }),
                         }}
                     >
-                        <IconifyIcon icon="ic:sharp-menu" />
+                        <Icon icon="ic:sharp-menu" />
                     </IconButton>
                 )}
 
@@ -80,6 +80,8 @@ const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHideMenu }) 
                 >
                     Dashboard
                 </Typography>
+
+                <ModeToggle />
 
                 <UserDropdown />
 
