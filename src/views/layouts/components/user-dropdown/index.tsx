@@ -6,15 +6,16 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import IconifyIcon from 'src/components/Icon';
 import Image from 'next/image';
 import { useAuth } from 'src/hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 type TProps = {};
 
 const UserDropdown = (props: TProps) => {
+    const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const { user, logout } = useAuth();
@@ -30,7 +31,7 @@ const UserDropdown = (props: TProps) => {
     return (
         <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                <Tooltip title="Account settings">
+                <Tooltip title={t('Account')}>
                     <IconButton
                         onClick={handleClick}
                         size="small"

@@ -8,6 +8,7 @@ import { NextPage } from 'next';
 import Icon from 'src/components/Icon';
 import ModeToggle from 'src/views/layouts/components/mode-toggle';
 import UserDropdown from 'src/views/layouts/components/user-dropdown';
+import LanguageDropdown from 'src/views/layouts/components/language-dropdown';
 
 const drawerWidth: number = 240;
 
@@ -81,19 +82,11 @@ const HorizontalLayout: NextPage<TProps> = ({ open, toggleDrawer, isHideMenu }) 
                     Dashboard
                 </Typography>
 
+                <LanguageDropdown />
+
                 <ModeToggle />
 
                 <UserDropdown />
-
-                {/*  Icon notification  */}
-                {/*<IconButton color="inherit">*/}
-                {/*    <Badge*/}
-                {/*        badgeContent={4}*/}
-                {/*        color="primary"*/}
-                {/*    >*/}
-                {/*        <IconifyIcon icon="mingcute:notification-fill" />*/}
-                {/*    </Badge>*/}
-                {/*</IconButton>*/}
             </Toolbar>
         </AppBar>
     );
