@@ -26,7 +26,7 @@ const GuestGuard = (props: GuestGuardProps) => {
     }, [router.route]);
 
     // if bên dưới sẽ chạy trước useEffect ở trên
-    if (authContext.loading) {
+    if (authContext.loading && !authContext.loading && authContext.user !== null) {
         return fallback;
     }
 

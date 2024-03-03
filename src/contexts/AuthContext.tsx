@@ -72,6 +72,8 @@ const AuthProvider = ({ children }: Props) => {
     }, []);
 
     const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
+        setLoading(true);
+
         loginAuth({ email: params.email, password: params.password })
             .then(async (response) => {
                 params.rememberMe
@@ -82,6 +84,7 @@ const AuthProvider = ({ children }: Props) => {
                       )
                     : null;
 
+                setLoading(false);
                 setUser({ ...response.data.user });
 
                 const returnUrl = router.query.returnUrl;
@@ -90,7 +93,10 @@ const AuthProvider = ({ children }: Props) => {
             })
 
             .catch((err) => {
-                if (errorCallback) errorCallback(err);
+                setLoading(false);
+                if (errorCallback) {
+                    errorCallback(err);
+                }
             });
     };
 

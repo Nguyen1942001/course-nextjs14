@@ -68,6 +68,7 @@ const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
     } else if (!guestGuard && !authGuard) {
         return <>{children}</>;
     } else {
+        // Case guestGuard = false and authGuard = true
         return <AuthGuard fallback={<FallbackSpinner />}>{children}</AuthGuard>;
     }
 };
