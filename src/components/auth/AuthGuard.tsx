@@ -26,7 +26,7 @@ const AuthGuard = (props: AuthGuardProps) => {
             !window.localStorage.getItem(ACCESS_TOKEN) &&
             !window.localStorage.getItem(USER_DATA)
         ) {
-            if (router.asPath !== '/') {
+            if (router.asPath !== '/' && router.asPath !== '/login') {
                 // Quay về trang login kèm theo tham số returnUrl (trên url) chứa domain trước đó
                 router.replace({
                     pathname: '/login',
