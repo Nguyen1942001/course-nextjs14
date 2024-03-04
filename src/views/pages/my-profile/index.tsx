@@ -1,10 +1,8 @@
 'use client';
 
 import { NextPage } from 'next';
-import Link from 'next/link';
-import { Button, Card, Grid, IconButton } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import CustomTextField from 'src/components/text-field';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,9 +10,9 @@ import * as yup from 'yup';
 import { PASSWORD_REG } from 'src/configs/regex';
 import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-import Image from 'next/image';
 import IconifyIcon from 'src/components/Icon';
 import Avatar from '@mui/material/Avatar';
+import { useTranslation } from 'react-i18next';
 
 type TProps = {};
 type TDefaultValue = {
@@ -23,9 +21,12 @@ type TDefaultValue = {
     confirmPassword: string;
 };
 
+// 12p45s
 const MyProfilePage: NextPage<TProps> = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const { t } = useTranslation();
 
     const defaultValue: TDefaultValue = {
         email: '',
@@ -72,240 +73,264 @@ const MyProfilePage: NextPage<TProps> = () => {
             noValidate
             autoComplete="off"
         >
-            <Card
-                sx={{
-                    backgroundColor: theme.palette.background.paper,
-                    borderRadius: '15px',
-                    p: 4,
-                }}
-            >
+            <Grid container>
+                {/*   Left  */}
                 <Grid
+                    item
                     container
-                    spacing={5}
+                    md={6}
+                    xs={12}
+                    sx={{
+                        backgroundColor: theme.palette.background.paper,
+                        borderRadius: '15px',
+                        py: 5,
+                        px: 4,
+                    }}
                 >
-                    {/*   Left  */}
-                    <Grid
-                        item
-                        container
-                        md={6}
-                        xs={12}
-                        spacing={5}
+                    <Box
+                        sx={{
+                            height: '100%',
+                            width: '100%',
+                        }}
                     >
                         <Grid
-                            item
-                            md={12}
-                            xs={12}
+                            container
+                            spacing={4}
                         >
-                            <Box
-                                sx={{
-                                    width: '100%',
-                                    height: '100%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    flexDirection: 'column',
-                                    gap: 2,
-                                }}
+                            <Grid
+                                item
+                                md={12}
+                                xs={12}
                             >
-                                <Avatar sx={{ width: 100, height: 100 }}>
-                                    {/*{user?.avatar ? (*/}
-                                    {/*    <Image*/}
-                                    {/*        src={user?.avatar || ''}*/}
-                                    {/*        alt="avatar"*/}
-                                    {/*        style={{*/}
-                                    {/*            height: 'auto',*/}
-                                    {/*            width: 'auto',*/}
-                                    {/*        }}*/}
-                                    {/*    />*/}
-                                    {/*) : (*/}
-                                    {/*    <IconifyIcon icon="ph:user-thin" />*/}
-                                    {/*)}*/}
-
-                                    <IconifyIcon icon="ph:user-thin" />
-                                </Avatar>
-
-                                <Button
-                                    variant="outlined"
-                                    sx={{ width: 'auto' }}
+                                <Box
+                                    sx={{
+                                        width: '100%',
+                                        height: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        flexDirection: 'column',
+                                        gap: 2,
+                                    }}
                                 >
-                                    Tải lên
-                                </Button>
-                            </Box>
-                        </Grid>
+                                    <Avatar sx={{ width: 100, height: 100 }}>
+                                        {/*{user?.avatar ? (*/}
+                                        {/*    <Image*/}
+                                        {/*        src={user?.avatar || ''}*/}
+                                        {/*        alt="avatar"*/}
+                                        {/*        style={{*/}
+                                        {/*            height: 'auto',*/}
+                                        {/*            width: 'auto',*/}
+                                        {/*        }}*/}
+                                        {/*    />*/}
+                                        {/*) : (*/}
+                                        {/*    <IconifyIcon icon="ph:user-thin" />*/}
+                                        {/*)}*/}
 
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <Controller
-                                control={control}
-                                rules={{
-                                    required: true,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <CustomTextField
-                                        required
-                                        fullWidth
-                                        label="Email"
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        placeholder="Input email"
-                                        error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
-                                        helperText={errors?.email?.message}
-                                    />
-                                )}
-                                name="email"
-                            />
-                        </Grid>
+                                        <IconifyIcon icon="ph:user-thin" />
+                                    </Avatar>
 
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <Controller
-                                control={control}
-                                rules={{
-                                    required: true,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <CustomTextField
-                                        required
-                                        fullWidth
-                                        label="Email"
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        placeholder="Input email"
-                                        error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
-                                        helperText={errors?.email?.message}
-                                    />
-                                )}
-                                name="email"
-                            />
-                        </Grid>
-                    </Grid>
+                                    <Button
+                                        variant="outlined"
+                                        sx={{ width: 'auto' }}
+                                    >
+                                        Tải lên
+                                    </Button>
+                                </Box>
+                            </Grid>
 
-                    {/*   Right  */}
-                    <Grid
-                        item
-                        container
-                        md={6}
-                        xs={12}
-                        spacing={5}
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <CustomTextField
+                                            required
+                                            fullWidth
+                                            label="Email"
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            value={value}
+                                            placeholder={t('enter_your_email')}
+                                            error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
+                                            helperText={errors?.email?.message}
+                                        />
+                                    )}
+                                    name="email"
+                                />
+                            </Grid>
+
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <CustomTextField
+                                            required
+                                            fullWidth
+                                            disabled
+                                            label={t('Role')}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            value={value}
+                                            placeholder={t('enter_your_role')}
+                                            error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
+                                            helperText={errors?.email?.message}
+                                        />
+                                    )}
+                                    name="email"
+                                />
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Grid>
+
+                {/*   Right  */}
+                <Grid
+                    item
+                    container
+                    md={6}
+                    xs={12}
+                    mt={{ md: 0, xs: 5 }}
+                >
+                    <Box
+                        sx={{
+                            height: '100%',
+                            width: '100%',
+                            backgroundColor: theme.palette.background.paper,
+                            borderRadius: '15px',
+                            py: 5,
+                            px: 4,
+                        }}
+                        marginLeft={{ md: 5, xs: 0 }}
                     >
                         <Grid
-                            item
-                            md={6}
-                            xs={12}
+                            container
+                            spacing={4}
                         >
-                            <Controller
-                                control={control}
-                                rules={{
-                                    required: true,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <CustomTextField
-                                        required
-                                        fullWidth
-                                        label="Email"
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        placeholder="Input email"
-                                        error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
-                                        helperText={errors?.email?.message}
-                                    />
-                                )}
-                                name="email"
-                            />
-                        </Grid>
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <CustomTextField
+                                            required
+                                            fullWidth
+                                            label={t('Address')}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            value={value}
+                                            placeholder={t('enter_your_address')}
+                                            error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
+                                            helperText={errors?.email?.message}
+                                        />
+                                    )}
+                                    name="address"
+                                />
+                            </Grid>
 
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <Controller
-                                control={control}
-                                rules={{
-                                    required: true,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <CustomTextField
-                                        required
-                                        fullWidth
-                                        label="Email"
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        placeholder="Input email"
-                                        error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
-                                        helperText={errors?.email?.message}
-                                    />
-                                )}
-                                name="email"
-                            />
-                        </Grid>
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <CustomTextField
+                                            required
+                                            fullWidth
+                                            label={t('City')}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            value={value}
+                                            placeholder={t('enter_your_city')}
+                                            error={Boolean(errors?.city)} // error là props của TextFieldProps (MUI)
+                                            helperText={errors?.city?.message}
+                                        />
+                                    )}
+                                    name="city"
+                                />
+                            </Grid>
 
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <Controller
-                                control={control}
-                                rules={{
-                                    required: true,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <CustomTextField
-                                        required
-                                        fullWidth
-                                        label="Email"
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        placeholder="Input email"
-                                        error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
-                                        helperText={errors?.email?.message}
-                                    />
-                                )}
-                                name="email"
-                            />
-                        </Grid>
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <CustomTextField
+                                            required
+                                            fullWidth
+                                            label={t('Phone_number')}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            value={value}
+                                            placeholder={t('enter_your_phone_number')}
+                                            error={Boolean(errors?.phoneNumber)} // error là props của TextFieldProps (MUI)
+                                            helperText={errors?.phoneNumber?.message}
+                                        />
+                                    )}
+                                    name="phoneNumber"
+                                />
+                            </Grid>
 
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <Controller
-                                control={control}
-                                rules={{
-                                    required: true,
-                                }}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <CustomTextField
-                                        required
-                                        fullWidth
-                                        label="Email"
-                                        onChange={onChange}
-                                        onBlur={onBlur}
-                                        value={value}
-                                        placeholder="Input email"
-                                        error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
-                                        helperText={errors?.email?.message}
-                                    />
-                                )}
-                                name="email"
-                            />
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <Controller
+                                    control={control}
+                                    rules={{
+                                        required: true,
+                                    }}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <CustomTextField
+                                            required
+                                            fullWidth
+                                            label="Email"
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            value={value}
+                                            placeholder="Input email"
+                                            error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
+                                            helperText={errors?.email?.message}
+                                        />
+                                    )}
+                                    name="email"
+                                />
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Box>
                 </Grid>
-            </Card>
+            </Grid>
 
             <Box
                 sx={{
