@@ -46,7 +46,7 @@ const LayoutNotApp: NextPage<TProps> = ({ children }) => {
                         width: 'calc(100vw - 36px)',
                         maxWidth: 'unset !important',
                         overflow: 'auto',
-                        padding: 0,
+                        padding: '0 !important',
                         borderRadius: '15px',
 
                         // theme.mixins.toolbar.minHeight là height của HorizontalLayout

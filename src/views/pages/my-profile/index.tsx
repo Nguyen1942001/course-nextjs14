@@ -7,31 +7,37 @@ import CustomTextField from 'src/components/text-field';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { PASSWORD_REG } from 'src/configs/regex';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import IconifyIcon from 'src/components/Icon';
 import Avatar from '@mui/material/Avatar';
 import { useTranslation } from 'react-i18next';
+import { Icon } from '@iconify/react';
+import WrapperFileUpload from 'src/components/wrapper-file-upload';
+import { useAuth } from 'src/hooks/useAuth';
 
 type TProps = {};
+
 type TDefaultValue = {
     email: string;
-    password: string;
-    confirmPassword: string;
+    address: string;
+    city: string;
+    phoneNumber: string;
+    role: string;
+    fullName: string;
 };
 
-// 12p45s
 const MyProfilePage: NextPage<TProps> = () => {
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+    const { user } = useAuth();
     const { t } = useTranslation();
 
     const defaultValue: TDefaultValue = {
         email: '',
-        password: '',
-        confirmPassword: '',
+        address: '',
+        city: '',
+        phoneNumber: '',
+        role: '',
+        fullName: '',
     };
 
     // Theme
@@ -42,30 +48,42 @@ const MyProfilePage: NextPage<TProps> = () => {
             .string()
             .email('The field must be in email type')
             .required('The field is required'),
-        password: yup
-            .string()
-            .required('The field is required')
-            .matches(PASSWORD_REG, 'The password is contain character, special character, number'),
-        confirmPassword: yup
-            .string()
-            .required('The field is required')
-            .matches(PASSWORD_REG, 'The password is contain character, special character, number')
-            .oneOf([yup.ref('password'), ''], 'The confirm password must match with password'),
+        fullName: yup.string().required('This field is required'),
+        address: yup.string().required('This field is required'),
+        city: yup.string().required('This field is required'),
+        phoneNumber: yup.string().required('This field is required'),
+        role: yup.string().required('This field is required'),
     });
 
     const {
         handleSubmit,
         control,
         formState: { errors },
+        reset,
     } = useForm({
         defaultValues: defaultValue,
         mode: 'onBlur',
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = (data: { email: string; password: string }) => {
+    useEffect(() => {
+        if (user) {
+            reset({
+                email: '',
+                address: '',
+                city: '',
+                phoneNumber: '',
+                fullName: '',
+                role: user?.role?.name,
+            });
+        }
+    }, [user]);
+
+    const onSubmit = (data: { email: string }) => {
         console.log('data', { data, errors });
     };
+
+    const handleUploadAvatar = (file: File) => {};
 
     return (
         <form
@@ -127,15 +145,32 @@ const MyProfilePage: NextPage<TProps> = () => {
                                         {/*    <IconifyIcon icon="ph:user-thin" />*/}
                                         {/*)}*/}
 
-                                        <IconifyIcon icon="ph:user-thin" />
+                                        <IconifyIcon
+                                            icon="ph:user-thin"
+                                            fontSize={70}
+                                        />
                                     </Avatar>
 
-                                    <Button
-                                        variant="outlined"
-                                        sx={{ width: 'auto' }}
+                                    <WrapperFileUpload
+                                        uploadFunc={handleUploadAvatar}
+                                        objectAcceptFile={{
+                                            'image/jpeg': ['.jpg', '.jpeg'],
+                                            'image/png': ['.png'],
+                                        }}
                                     >
-                                        Tải lên
-                                    </Button>
+                                        <Button
+                                            variant="outlined"
+                                            sx={{
+                                                width: 'auto',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 1,
+                                            }}
+                                        >
+                                            <Icon icon="ant-design:camera-outlined" />
+                                            {t('upload_avatar')}
+                                        </Button>
+                                    </WrapperFileUpload>
                                 </Box>
                             </Grid>
 
@@ -186,11 +221,11 @@ const MyProfilePage: NextPage<TProps> = () => {
                                             onBlur={onBlur}
                                             value={value}
                                             placeholder={t('enter_your_role')}
-                                            error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
-                                            helperText={errors?.email?.message}
+                                            error={Boolean(errors?.role)} // error là props của TextFieldProps (MUI)
+                                            helperText={errors?.role?.message}
                                         />
                                     )}
-                                    name="email"
+                                    name="role"
                                 />
                             </Grid>
                         </Grid>
@@ -234,13 +269,36 @@ const MyProfilePage: NextPage<TProps> = () => {
                                         <CustomTextField
                                             required
                                             fullWidth
+                                            label={t('full_name')}
+                                            onChange={onChange}
+                                            onBlur={onBlur}
+                                            value={value}
+                                            placeholder={t('enter_your_full_name')}
+                                            error={Boolean(errors?.fullName)} // error là props của TextFieldProps (MUI)
+                                            helperText={errors?.fullName?.message}
+                                        />
+                                    )}
+                                    name="fullName"
+                                />
+                            </Grid>
+
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <Controller
+                                    control={control}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <CustomTextField
+                                            fullWidth
                                             label={t('Address')}
                                             onChange={onChange}
                                             onBlur={onBlur}
                                             value={value}
                                             placeholder={t('enter_your_address')}
-                                            error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
-                                            helperText={errors?.email?.message}
+                                            error={Boolean(errors?.address)} // error là props của TextFieldProps (MUI)
+                                            helperText={errors?.address?.message}
                                         />
                                     )}
                                     name="address"
@@ -254,12 +312,8 @@ const MyProfilePage: NextPage<TProps> = () => {
                             >
                                 <Controller
                                     control={control}
-                                    rules={{
-                                        required: true,
-                                    }}
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <CustomTextField
-                                            required
                                             fullWidth
                                             label={t('City')}
                                             onChange={onChange}
@@ -281,50 +335,19 @@ const MyProfilePage: NextPage<TProps> = () => {
                             >
                                 <Controller
                                     control={control}
-                                    rules={{
-                                        required: true,
-                                    }}
                                     render={({ field: { onChange, onBlur, value } }) => (
                                         <CustomTextField
-                                            required
                                             fullWidth
                                             label={t('Phone_number')}
                                             onChange={onChange}
                                             onBlur={onBlur}
                                             value={value}
-                                            placeholder={t('enter_your_phone_number')}
+                                            placeholder={t('enter_your_phone')}
                                             error={Boolean(errors?.phoneNumber)} // error là props của TextFieldProps (MUI)
                                             helperText={errors?.phoneNumber?.message}
                                         />
                                     )}
                                     name="phoneNumber"
-                                />
-                            </Grid>
-
-                            <Grid
-                                item
-                                md={6}
-                                xs={12}
-                            >
-                                <Controller
-                                    control={control}
-                                    rules={{
-                                        required: true,
-                                    }}
-                                    render={({ field: { onChange, onBlur, value } }) => (
-                                        <CustomTextField
-                                            required
-                                            fullWidth
-                                            label="Email"
-                                            onChange={onChange}
-                                            onBlur={onBlur}
-                                            value={value}
-                                            placeholder="Input email"
-                                            error={Boolean(errors?.email)} // error là props của TextFieldProps (MUI)
-                                            helperText={errors?.email?.message}
-                                        />
-                                    )}
-                                    name="email"
                                 />
                             </Grid>
                         </Grid>
@@ -346,7 +369,7 @@ const MyProfilePage: NextPage<TProps> = () => {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                 >
-                    Thay đổi
+                    {t('Update')}
                 </Button>
             </Box>
         </form>

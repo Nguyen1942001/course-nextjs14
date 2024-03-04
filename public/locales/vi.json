@@ -3,5 +3,16 @@
   "my_profile": "Hồ sơ của tôi",
   "enter_your_email": "Nhập email của bạn",
   "Role": "Nhóm vai trò",
-  "enter_your_role": "Chọn vai trò của bạn"
+  "enter_your_role": "Chọn vai trò của bạn",
+  "Full_name": "Họ và tên",
+  "Address": "Địa chỉ",
+  "City": "Thành phố",
+  "Phone_number": "Số điện thoại",
+  "enter_your_city": "Chọn thành phố của bạn",
+  "enter_your_full_name": "Nhập họ tên của bạn",
+  "enter_your_phone": "Nhập số điện thoại của bạn",
+  "enter_your_address": "Nhập địa chỉ của bạn",
+  "upload_avatar": "Upload ảnh đại diện",
+  "change_avatar": "Thay đổi ảnh đại diện",
+  "Update": "Cập nhật"
 }

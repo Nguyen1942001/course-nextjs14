@@ -3,5 +3,16 @@
   "my_profile": "My profile",
   "enter_your_email": "Enter your email",
   "Role": "Role group",
-  "enter_your_role": "Select your role"
+  "enter_your_role": "Select your role",
+  "Full_name": "Full name",
+  "Address": "Address",
+  "City": "City",
+  "Phone_number": "Phone Number",
+  "enter_your_city": "Choose your city",
+  "enter_your_full_name": "Enter your full name",
+  "enter_your_phone": "Enter your phone number",
+  "enter_your_address": "Enter your address",
+  "upload_avatar": "Upload avatar",
+  "change_avatar": "Change your avatar",
+  "Update": "Update Info"
 }
