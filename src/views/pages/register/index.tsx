@@ -18,6 +18,9 @@ import Image from 'next/image';
 import { useTheme } from '@mui/material/styles';
 import RegisterDark from '/public/images/register-dark.png';
 import RegisterLight from '/public/images/register-light.png';
+import { useDispatch } from 'react-redux';
+import { registerAuthAsync } from 'src/stores/apps/auth/action';
+import { AppDispatch } from 'src/stores';
 
 type TProps = {};
 type TDefaultValue = {
@@ -29,6 +32,9 @@ type TDefaultValue = {
 const RegisterPage: NextPage<TProps> = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    // Redux
+    const dispatch: AppDispatch = useDispatch();
 
     const defaultValue: TDefaultValue = {
         email: '',
@@ -66,7 +72,7 @@ const RegisterPage: NextPage<TProps> = () => {
     });
 
     const onSubmit = (data: { email: string; password: string }) => {
-        console.log('data', { data, errors });
+        dispatch(registerAuthAsync({ email: data.email, password: data.password }));
     };
 
     return (

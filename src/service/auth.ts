@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { CONFIG_API } from 'src/configs/api';
-import { TLoginAuth } from 'src/types/auth';
+import { TLoginAuth, TRegisterAuth } from 'src/types/auth';
 import instanceAxios from 'src/helper/aixos';
 
 export const loginAuth = async (data: TLoginAuth) => {
@@ -22,5 +22,15 @@ export const logoutAuth = async () => {
         return res.data;
     } catch (e) {
         return null;
+    }
+};
+
+export const registerAuth = async (data: TRegisterAuth) => {
+    try {
+        const res = await axios.post(`${CONFIG_API.AUTH.INDEX}/register`, data);
+
+        return res.data;
+    } catch (e) {
+        return e;
     }
 };

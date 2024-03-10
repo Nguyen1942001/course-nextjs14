@@ -17,4 +17,6 @@
 - 1 vấn đề về type trong typescript: Cần check variable chắc chắn là type đó trước khi truyền vào, nếu không có thể sẽ
 gây ra lỗi (có thể là undefined hoặc là null => sẽ bị cảnh báo)
 
--- **** Xong chương 5 sẽ coi lại toàn bộ luồng login và phân quyền
+-- **** Xong chương 5 sẽ coi lại toàn bộ luồng login, register và phân quyền
+
+// 31p50s
