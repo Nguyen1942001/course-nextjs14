@@ -188,6 +188,7 @@ const MyProfilePage: NextPage<TProps> = () => {
                                         <CustomTextField
                                             required
                                             fullWidth
+                                            disabled
                                             label="Email"
                                             onChange={onChange}
                                             onBlur={onBlur}

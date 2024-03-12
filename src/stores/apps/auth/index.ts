@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { createSlice } from '@reduxjs/toolkit';
 
 // ** Axios Imports
-import { registerAuthAsync } from 'src/stores/apps/auth/action';
+import { registerAuthAsync, updateAuthMeAsync } from 'src/stores/apps/auth/action';
 
 interface DataParams {
     q: string;
@@ -23,6 +23,10 @@ const initialState = {
     isError: false,
     message: '',
     typeError: '',
+
+    isSuccessUpdateMe: true,
+    isErrorUpdateMe: false,
+    messageUpdateMe: '',
 };
 
 export const authsSlice = createSlice({
@@ -35,9 +39,15 @@ export const authsSlice = createSlice({
             state.isError = true;
             state.message = '';
             state.typeError = '';
+
+            state.isSuccessUpdateMe = false;
+            state.isErrorUpdateMe = true;
+            state.messageUpdateMe = '';
         },
     },
     extraReducers: (builder) => {
+        // ** register
+
         // pending: đang xử lý
         builder.addCase(registerAuthAsync.pending, (state, action) => {
             state.isLoading = true;
@@ -45,7 +55,6 @@ export const authsSlice = createSlice({
 
         // fulfilled: xử lý thành công
         builder.addCase(registerAuthAsync.fulfilled, (state, action) => {
-            console.log('action', action);
             state.isLoading = false;
             state.isSuccess = !!action.payload?.data?.email; // !!: chuyển sang dạng boolean
             state.isError = !action.payload?.data?.email;
@@ -59,6 +68,27 @@ export const authsSlice = createSlice({
             state.isSuccess = false;
             state.isError = true;
             state.message = '';
+            state.typeError = '';
+        });
+
+        // ** update me
+        builder.addCase(updateAuthMeAsync.pending, (state, action) => {
+            state.isLoading = true;
+        });
+
+        builder.addCase(updateAuthMeAsync.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccessUpdateMe = !!action.payload?.data?.email; // !!: chuyển sang dạng boolean
+            state.isErrorUpdateMe = !action.payload?.data?.email;
+            state.messageUpdateMe = action.payload?.message;
+            state.typeError = action.payload?.typeError;
+        });
+
+        builder.addCase(updateAuthMeAsync.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isSuccessUpdateMe = false;
+            state.isErrorUpdateMe = true;
+            state.messageUpdateMe = '';
             state.typeError = '';
         });
     },

@@ -19,4 +19,5 @@ gây ra lỗi (có thể là undefined hoặc là null => sẽ bị cảnh báo)
 
 -- **** Xong chương 5 sẽ coi lại toàn bộ luồng login, register và phân quyền
 
-// 31p50s
+5p30s
+

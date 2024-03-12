@@ -34,3 +34,13 @@ export const registerAuth = async (data: TRegisterAuth) => {
         return e;
     }
 };
+
+export const updateAuthMe = async (data: any) => {
+    try {
+        const res = await axios.put(`${CONFIG_API.AUTH.INDEX}/me`, data);
+
+        return res.data;
+    } catch (e) {
+        return e;
+    }
+};
