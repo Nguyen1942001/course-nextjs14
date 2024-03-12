@@ -22,7 +22,7 @@ const AclGuard = (props: AclGuardProps) => {
     const router = useRouter();
 
     const auth = useAuth();
-    const permissionUser = auth.user?.role.permissions ?? [];
+    const permissionUser = auth.user?.role?.permissions ?? [];
 
     let ability: AppAbility;
 
