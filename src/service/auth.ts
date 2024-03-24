@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CONFIG_API } from 'src/configs/api';
 import { TLoginAuth, TRegisterAuth } from 'src/types/auth';
-import instanceAxios from 'src/helper/aixos';
+import instanceAxios from '../helper/axios';
 
 export const loginAuth = async (data: TLoginAuth) => {
     try {
@@ -37,7 +37,17 @@ export const registerAuth = async (data: TRegisterAuth) => {
 
 export const updateAuthMe = async (data: any) => {
     try {
-        const res = await axios.put(`${CONFIG_API.AUTH.INDEX}/me`, data);
+        const res = await instanceAxios.put(`${CONFIG_API.AUTH.INDEX}/me`, data);
+
+        return res.data;
+    } catch (e) {
+        return e;
+    }
+};
+
+export const getAuthMe = async () => {
+    try {
+        const res = await instanceAxios.get(`${CONFIG_API.AUTH.INDEX}/me`);
 
         return res.data;
     } catch (e) {

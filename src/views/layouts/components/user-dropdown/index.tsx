@@ -53,9 +53,12 @@ const UserDropdown = (props: TProps) => {
                                 <Image
                                     src={user?.avatar || ''}
                                     alt="avatar"
+                                    width={100}
+                                    height={100}
                                     style={{
                                         height: 'auto',
                                         width: 'auto',
+                                        objectFit: 'cover',
                                     }}
                                 />
                             ) : (

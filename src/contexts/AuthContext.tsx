@@ -15,7 +15,7 @@ import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './ty
 import { loginAuth, logoutAuth } from 'src/service/auth';
 import { CONFIG_API } from 'src/configs/api';
 import { clearLocalUserData, setLocalUserData } from 'src/helper/storage';
-import instanceAxios from 'src/helper/aixos';
+import instanceAxios from '../helper/axios';
 
 // ** Defaults
 const defaultProvider: AuthValuesType = {
