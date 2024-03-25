@@ -17,4 +17,9 @@ export const store = configureStore({
 });
 
 export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>; // type của reducer ở trên
+
+/**
+ * RootState: type của reducer ở trên
+ * store.getState: Lấy ra state hiện tại của reducer
+ */
+export type RootState = ReturnType<typeof store.getState>;

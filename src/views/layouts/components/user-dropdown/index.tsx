@@ -13,11 +13,44 @@ import { useAuth } from 'src/hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import { ROUTE_CONFIG } from 'src/configs/route';
+import Typography from '@mui/material/Typography';
+import { toFullName } from 'src/utils';
+import { Badge } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 type TProps = {};
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        backgroundColor: '#44b700',
+        color: '#44b700',
+        boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+        '&::after': {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            borderRadius: '50%',
+            animation: 'ripple 1.2s infinite ease-in-out',
+            border: '1px solid currentColor',
+            content: '""',
+        },
+    },
+    '@keyframes ripple': {
+        '0%': {
+            transform: 'scale(.8)',
+            opacity: 1,
+        },
+        '100%': {
+            transform: 'scale(2.4)',
+            opacity: 0,
+        },
+    },
+}));
+
 const UserDropdown = (props: TProps) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const { user, logout } = useAuth();
@@ -32,7 +65,7 @@ const UserDropdown = (props: TProps) => {
     };
 
     const handleNavigateMyProfile = () => {
-        router.push(`/${ROUTE_CONFIG.MY_PROFILE}`);
+        router.push(ROUTE_CONFIG.MY_PROFILE);
         handleClose();
     };
 
@@ -48,26 +81,33 @@ const UserDropdown = (props: TProps) => {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
-                        <Avatar sx={{ width: 32, height: 32 }}>
-                            {user?.avatar ? (
-                                <Image
-                                    src={user?.avatar || ''}
-                                    alt="avatar"
-                                    width={100}
-                                    height={100}
-                                    style={{
-                                        height: 'auto',
-                                        width: 'auto',
-                                        objectFit: 'cover',
-                                    }}
-                                />
-                            ) : (
-                                <IconifyIcon icon="ph:user-thin" />
-                            )}
-                        </Avatar>
+                        <StyledBadge
+                            overlap="circular"
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            variant="dot"
+                        >
+                            <Avatar sx={{ width: 32, height: 32 }}>
+                                {user?.avatar ? (
+                                    <Image
+                                        src={user?.avatar || ''}
+                                        alt="avatar"
+                                        width={0}
+                                        height={0}
+                                        style={{
+                                            height: '32px',
+                                            width: '32px',
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+                                ) : (
+                                    <IconifyIcon icon="ph:user-thin" />
+                                )}
+                            </Avatar>
+                        </StyledBadge>
                     </IconButton>
                 </Tooltip>
             </Box>
+
             <Menu
                 anchorEl={anchorEl}
                 id="account-menu"
@@ -103,9 +143,62 @@ const UserDropdown = (props: TProps) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleClose}>
-                    {user?.email} {user?.middleName} {user?.lastName}
-                </MenuItem>
+                {/*  Phần tử đầu tiên  */}
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        px: 2,
+                        pb: 2,
+                        mx: 2,
+                    }}
+                >
+                    <StyledBadge
+                        overlap="circular"
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                        variant="dot"
+                    >
+                        <Avatar sx={{ width: 32, height: 32 }}>
+                            {user?.avatar ? (
+                                <Image
+                                    src={user?.avatar || ''}
+                                    alt="avatar"
+                                    width={0}
+                                    height={0}
+                                    style={{
+                                        height: '32px',
+                                        width: '32px',
+                                        objectFit: 'cover',
+                                    }}
+                                />
+                            ) : (
+                                <IconifyIcon icon="ph:user-thin" />
+                            )}
+                        </Avatar>
+                    </StyledBadge>
+
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 1,
+                        }}
+                    >
+                        <Typography component="span">
+                            {toFullName(
+                                user?.lastName || '',
+                                user?.middleName || '',
+                                user?.firstName || '',
+                                i18n.language
+                            )}
+                        </Typography>
+
+                        <Typography component="span">{user?.role?.name}</Typography>
+                    </Box>
+                </Box>
+
+                <Divider />
 
                 <MenuItem onClick={handleNavigateMyProfile}>
                     <Avatar /> {t('my_profile')}

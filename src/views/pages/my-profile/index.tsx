@@ -9,18 +9,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-import IconifyIcon from 'src/components/Icon';
 import Avatar from '@mui/material/Avatar';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@iconify/react';
 import WrapperFileUpload from 'src/components/wrapper-file-upload';
 import { getAuthMe } from 'src/service/auth';
 import { UserDataType } from 'src/contexts/types';
-import { convertBase64, toFullName } from 'src/utils';
+import { convertBase64, separationFullName, toFullName } from 'src/utils';
 import IconButton from '@mui/material/IconButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/stores';
-import { useSelect } from '@mui/base';
 import toast from 'react-hot-toast';
 import { resetInitialState } from 'src/stores/apps/auth';
 import { updateAuthMeAsync } from 'src/stores/apps/auth/action';
@@ -113,7 +111,7 @@ const MyProfilePage: NextPage<TProps> = () => {
                     });
                 }
 
-                setUser({ ...response.data });
+                // setUser({ ...response.data });
             })
             .catch(() => {
                 setUser(null);
@@ -123,7 +121,7 @@ const MyProfilePage: NextPage<TProps> = () => {
 
     useEffect(() => {
         fetchGetAuthMe();
-    }, []);
+    }, [i18n.language]);
 
     useEffect(() => {
         if (messageUpdateMe) {
@@ -141,10 +139,18 @@ const MyProfilePage: NextPage<TProps> = () => {
     }, [isErrorUpdateMe, isSuccessUpdateMe, messageUpdateMe]);
 
     const onSubmit = (data: any) => {
+        // Phân tách chuỗi fullname thành lastName, middleName, firstName
+        const { firstName, middleName, lastName } = separationFullName(
+            data.fullName,
+            i18n.language
+        );
+
         dispatch(
             updateAuthMeAsync({
                 email: data.email,
-                firstName: data.fullName,
+                firstName: firstName,
+                lastName: lastName,
+                middleName: middleName,
                 role: roleId,
                 phoneNumber: data.phoneNumber,
                 avatar: avatar,
@@ -157,8 +163,6 @@ const MyProfilePage: NextPage<TProps> = () => {
         const base64 = await convertBase64(file);
         setAvatar(base64 as string);
     };
-
-    console.log('avatar', { avatar });
 
     return (
         <>
