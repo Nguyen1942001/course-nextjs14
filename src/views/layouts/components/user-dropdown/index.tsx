@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import { toFullName } from 'src/utils';
 import { Badge } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import Icon from 'src/components/Icon';
 
 type TProps = {};
 
@@ -201,13 +202,22 @@ const UserDropdown = (props: TProps) => {
                 <Divider />
 
                 <MenuItem onClick={handleNavigateMyProfile}>
-                    <Avatar /> {t('my_profile')}
+                    <Avatar>
+                        <Icon icon="ph:user-thin" />
+                    </Avatar>{' '}
+                    {t('my_profile')}
                 </MenuItem>
 
                 <Divider />
 
                 <MenuItem onClick={logout}>
-                    <ListItemIcon>{/*<Logout fontSize="small" />*/}</ListItemIcon>
+                    <Avatar
+                        sx={{
+                            backgroundColor: 'transparent',
+                        }}
+                    >
+                        <Icon icon="ic:round-logout" />
+                    </Avatar>
                     Logout
                 </MenuItem>
             </Menu>

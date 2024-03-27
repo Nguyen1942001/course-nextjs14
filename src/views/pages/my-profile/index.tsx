@@ -23,6 +23,7 @@ import toast from 'react-hot-toast';
 import { resetInitialState } from 'src/stores/apps/auth';
 import { updateAuthMeAsync } from 'src/stores/apps/auth/action';
 import FallbackSpinner from 'src/components/fall-back';
+import Spinner from 'src/components/spinner';
 
 type TProps = {};
 
@@ -111,7 +112,7 @@ const MyProfilePage: NextPage<TProps> = () => {
                     });
                 }
 
-                // setUser({ ...response.data });
+                setUser({ ...response.data });
             })
             .catch(() => {
                 setUser(null);
@@ -166,7 +167,8 @@ const MyProfilePage: NextPage<TProps> = () => {
 
     return (
         <>
-            {loading || (isLoading && <FallbackSpinner />)}
+            {/*<Spinner />*/}
+            {loading || (isLoading && <Spinner />)}
 
             <form
                 onSubmit={handleSubmit(onSubmit)}
