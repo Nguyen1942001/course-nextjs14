@@ -20,6 +20,8 @@ import LoginLight from '/public/images/login-light.png';
 
 // ** Hooks
 import { useAuth } from 'src/hooks/useAuth';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 type TProps = {};
 type TDefaultValue = {
@@ -31,6 +33,9 @@ type TDefaultValue = {
 const LoginPage: NextPage<TProps> = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isRemember, setIsRemember] = useState(true);
+
+    // Translation
+    const { t } = useTranslation();
 
     // Context
     const { login } = useAuth();
@@ -58,6 +63,7 @@ const LoginPage: NextPage<TProps> = () => {
         handleSubmit,
         control,
         formState: { errors },
+        setError,
     } = useForm({
         defaultValues: defaultValues,
         mode: 'onBlur',
@@ -66,9 +72,15 @@ const LoginPage: NextPage<TProps> = () => {
 
     const onSubmit = (data: { email: string; password: string }) => {
         if (!Object.keys(errors)?.length) {
-            login({ ...data, rememberMe: isRemember }); // handleLogin (file AuthContext.tsx)
+            // handleLogin (file AuthContext.tsx)
+            login({ ...data, rememberMe: isRemember }, (err) => {
+                // console.log('err', err);
+
+                if (err?.response?.data?.typeError === 'INVALID') {
+                    toast.error(t('the_email_or_password_wrong'));
+                }
+            });
         }
-        console.log('data', { data, errors });
     };
 
     return (
