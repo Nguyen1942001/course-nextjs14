@@ -19,7 +19,7 @@ import { useTheme } from '@mui/material/styles';
 import RegisterDark from '/public/images/register-dark.png';
 import RegisterLight from '/public/images/register-light.png';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerAuthAsync } from 'src/stores/apps/auth/action';
+import { changePasswordMeAsync, registerAuthAsync } from 'src/stores/apps/auth/action';
 import { AppDispatch, RootState } from 'src/stores';
 import { isSchema } from 'yup';
 import toast from 'react-hot-toast';
@@ -28,6 +28,7 @@ import { resetInitialState } from 'src/stores/apps/auth';
 import { useRouter } from 'next/router';
 import { ROUTE_CONFIG } from 'src/configs/route';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from 'src/hooks/useAuth';
 
 type TProps = {};
 type TDefaultValue = {
@@ -47,11 +48,17 @@ const ChangePasswordPage: NextPage<TProps> = () => {
     // Router
     const router = useRouter();
 
+    // Auth
+    const { logout } = useAuth();
+
     // Redux
     const dispatch: AppDispatch = useDispatch();
-    const { isLoading, isError, isSuccess, message } = useSelector(
-        (state: RootState) => state.auth
-    );
+    const {
+        isLoading,
+        isErrorChangePasswordMe,
+        isSuccessChangePasswordMe,
+        messageChangePasswordMe,
+    } = useSelector((state: RootState) => state.auth);
 
     const defaultValue: TDefaultValue = {
         currentPassword: '',
@@ -93,27 +100,30 @@ const ChangePasswordPage: NextPage<TProps> = () => {
 
     const onSubmit = (data: { currentPassword: string; newPassword: string }) => {
         if (!Object.keys(errors).length) {
-            // dispatch(
-            //     registerAuthAsync({
-            //         currentPassword: data.currentPassword,
-            //         newPassword: data.newPassword,
-            //     })
-            // );
+            dispatch(
+                changePasswordMeAsync({
+                    currentPassword: data.currentPassword,
+                    newPassword: data.newPassword,
+                })
+            );
         }
     };
 
     useEffect(() => {
-        if (message) {
-            if (isError) {
-                toast.error(message);
-            } else if (isSuccess) {
-                toast.success(message);
-                router.push(ROUTE_CONFIG.LOGIN);
+        if (messageChangePasswordMe) {
+            if (isErrorChangePasswordMe) {
+                toast.error(messageChangePasswordMe);
+            } else if (isSuccessChangePasswordMe) {
+                toast.success(messageChangePasswordMe);
+
+                setTimeout(() => {
+                    logout();
+                }, 300);
             }
 
             dispatch(resetInitialState());
         }
-    }, [isError, isSuccess, message]);
+    }, [isErrorChangePasswordMe, isSuccessChangePasswordMe, messageChangePasswordMe]);
 
     return (
         <>
@@ -138,7 +148,7 @@ const ChangePasswordPage: NextPage<TProps> = () => {
                         flexShrink: 0,
                         borderRadius: '20px',
                         backgroundColor: theme.palette.customColors.bodyBg,
-                        height: '100%',
+                        height: '75vh',
                         minWidth: '50vw',
                     }}
                 >

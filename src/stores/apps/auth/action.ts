@@ -1,6 +1,7 @@
 // ** Add User
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { registerAuth, updateAuthMe } from 'src/service/auth';
+import { changePasswordMe, registerAuth, updateAuthMe } from 'src/service/auth';
+import instanceAxios from 'src/helper/axios';
 
 export const registerAuthAsync = createAsyncThunk('auth/register', async (data: any) => {
     const response = await registerAuth(data);
@@ -30,3 +31,21 @@ export const updateAuthMeAsync = createAsyncThunk('auth/update-me', async (data:
         typeError: response?.response?.data?.typeError,
     };
 });
+
+export const changePasswordMeAsync = createAsyncThunk(
+    'auth/change-password-me',
+    async (data: any) => {
+        const response = await changePasswordMe(data);
+        console.log('response change password', response);
+
+        if (response?.status === 'Success') {
+            return { ...response, data: 1 };
+        }
+
+        return {
+            data: null,
+            message: response?.response?.data?.message,
+            typeError: response?.response?.data?.typeError,
+        };
+    }
+);

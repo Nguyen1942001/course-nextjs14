@@ -31,11 +31,15 @@ type TAxiosInterceptor = {
 };
 
 const AxiosInterceptor: FC<TAxiosInterceptor> = ({ children }) => {
-    const { accessToken, refreshToken } = getLocalUserData();
     const router = useRouter();
     const { setUser } = useAuth();
 
+    // Khi sử dụng instanceAxios để gọi api, chỉ có phần code bên dưới sẽ chạy, còn code ở trên chỉ
+    // chạy lần đầu tiên khi mới vào web
     instanceAxios.interceptors.request.use(async (config) => {
+        // Lấy 2 token mới nhất mỗi khi gọi api bằng instanceAxios
+        const { accessToken, refreshToken } = getLocalUserData();
+
         if (accessToken) {
             const decodedAccessToken: any = jwtDecode(accessToken);
 

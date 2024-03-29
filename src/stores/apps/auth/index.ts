@@ -3,7 +3,11 @@ import { Dispatch } from 'redux';
 import { createSlice } from '@reduxjs/toolkit';
 
 // ** Axios Imports
-import { registerAuthAsync, updateAuthMeAsync } from 'src/stores/apps/auth/action';
+import {
+    changePasswordMeAsync,
+    registerAuthAsync,
+    updateAuthMeAsync,
+} from 'src/stores/apps/auth/action';
 
 interface DataParams {
     q: string;
@@ -27,6 +31,10 @@ const initialState = {
     isSuccessUpdateMe: true,
     isErrorUpdateMe: false,
     messageUpdateMe: '',
+
+    isSuccessChangePasswordMe: true,
+    isErrorChangePasswordMe: false,
+    messageChangePasswordMe: '',
 };
 
 export const authsSlice = createSlice({
@@ -43,6 +51,10 @@ export const authsSlice = createSlice({
             state.isSuccessUpdateMe = false;
             state.isErrorUpdateMe = true;
             state.messageUpdateMe = '';
+
+            state.isSuccessChangePasswordMe = false;
+            state.isErrorChangePasswordMe = true;
+            state.messageChangePasswordMe = '';
         },
     },
     extraReducers: (builder) => {
@@ -89,6 +101,27 @@ export const authsSlice = createSlice({
             state.isSuccessUpdateMe = false;
             state.isErrorUpdateMe = true;
             state.messageUpdateMe = '';
+            state.typeError = '';
+        });
+
+        // ** change password me
+        builder.addCase(changePasswordMeAsync.pending, (state, action) => {
+            state.isLoading = true;
+        });
+
+        builder.addCase(changePasswordMeAsync.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSuccessChangePasswordMe = !!action.payload?.data; // !!: chuyển sang dạng boolean
+            state.isErrorChangePasswordMe = !action.payload?.data;
+            state.messageChangePasswordMe = action.payload?.message;
+            state.typeError = action.payload?.typeError;
+        });
+
+        builder.addCase(changePasswordMeAsync.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isSuccessChangePasswordMe = false;
+            state.isErrorChangePasswordMe = true;
+            state.messageChangePasswordMe = '';
             state.typeError = '';
         });
     },
