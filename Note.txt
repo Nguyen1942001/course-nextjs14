@@ -17,5 +17,13 @@
 - 1 vấn đề về type trong typescript: Cần check variable chắc chắn là type đó trước khi truyền vào, nếu không có thể sẽ
 gây ra lỗi (có thể là undefined hoặc là null => sẽ bị cảnh báo)
 
+- Khi đăng nhập mà không tick vào 'remember me':
+    + Chuyển sang các trang khác thì thao tác vẫn bình thường
+    + Nhưng khi F5 hoặc load lại trang, thì sẽ tự động xóa temporary token và chuyển sang trang login
+    + Cấu hình ở file AuthGuard, phần window.addEventListener('beforeunload', handleUnload)
+    + Kiểm tra access_token hết hạn chưa ở file 'src/helper/axios/index.tsx'
+
 -- **** Xong chương 5 sẽ coi lại redux trên youtube và coi lại toàn bộ luồng login, register và phân quyền
+
+video 29 14p03s
 
