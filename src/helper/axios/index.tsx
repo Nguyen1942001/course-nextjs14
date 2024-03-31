@@ -91,9 +91,6 @@ const AxiosInterceptor: FC<TAxiosInterceptor> = ({ children }) => {
                                             newAccessToken,
                                             refreshToken
                                         );
-                                    } else {
-                                        setLocalUserData(JSON.stringify(user), '', refreshToken);
-                                        setTemporaryToken(newAccessToken);
                                     }
                                 } else {
                                     handleRedirectLogin(router, setUser);
