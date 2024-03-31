@@ -1,11 +1,18 @@
-import Typography from '@mui/material/Typography'
+import Typography from '@mui/material/Typography';
+import { ReactNode } from 'react';
+import BlankLayout from 'src/views/layouts/BlankLayout';
+import Error404 from 'src/pages/404';
 
 const Error500 = () => {
-  return (
-    <Typography variant='h2' sx={{ mb: 1.5 }}>
-      Oops, something went wrong!
-    </Typography>
-  )
-}
+    return (
+        <Typography
+            variant="h2"
+            sx={{ mb: 1.5 }}
+        >
+            Oops, something went wrong!
+        </Typography>
+    );
+};
 
-export default Error500
+export default Error500;
+Error500.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>;

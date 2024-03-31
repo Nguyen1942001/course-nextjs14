@@ -1,115 +1,131 @@
 // ** React Imports
-import { createContext, useEffect, useState, ReactNode } from 'react'
+import { createContext, useEffect, useState, ReactNode } from 'react';
 
 // ** Next Import
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 // ** Axios
-import axios from 'axios'
+import axios from 'axios';
 
 // ** Config
-import authConfig from 'src/configs/auth'
+import authConfig from 'src/configs/auth';
 
 // ** Types
-import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types'
+import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types';
+import { loginAuth, logoutAuth } from 'src/service/auth';
+import { CONFIG_API } from 'src/configs/api';
+import { clearLocalUserData, setLocalUserData, setTemporaryToken } from 'src/helper/storage';
+import instanceAxios from '../helper/axios';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 // ** Defaults
 const defaultProvider: AuthValuesType = {
-  user: null,
-  loading: true,
-  setUser: () => null,
-  setLoading: () => Boolean,
-  login: () => Promise.resolve(),
-  logout: () => Promise.resolve()
-}
+    user: null,
+    loading: true,
+    setUser: () => null,
+    setLoading: () => Boolean,
+    login: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+};
 
-const AuthContext = createContext(defaultProvider)
+const AuthContext = createContext(defaultProvider);
 
 type Props = {
-  children: ReactNode
-}
+    children: ReactNode;
+};
 
 const AuthProvider = ({ children }: Props) => {
-  // ** States
-  const [user, setUser] = useState<UserDataType | null>(defaultProvider.user)
-  const [loading, setLoading] = useState<boolean>(defaultProvider.loading)
+    // ** States
+    const [user, setUser] = useState<UserDataType | null>(defaultProvider.user);
+    const [loading, setLoading] = useState<boolean>(defaultProvider.loading);
 
-  // ** Hooks
-  const router = useRouter()
+    // Translation
+    const { t } = useTranslation();
 
-  useEffect(() => {
-    const initAuth = async (): Promise<void> => {
-      const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
-      if (storedToken) {
-        setLoading(true)
-        await axios
-          .get(authConfig.meEndpoint, {
-            headers: {
-              Authorization: storedToken
+    // ** Hooks
+    const router = useRouter();
+
+    useEffect(() => {
+        const initAuth = async (): Promise<void> => {
+            const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName);
+            if (storedToken) {
+                setLoading(true);
+                await instanceAxios
+                    .get(CONFIG_API.AUTH.AUTH_ME)
+                    .then(async (response) => {
+                        setLoading(false);
+                        setUser({ ...response.data.data });
+                    })
+                    .catch(() => {
+                        // Xóa các thông tin trong local storage khi bị lỗi
+                        clearLocalUserData();
+
+                        setUser(null);
+                        setLoading(false);
+
+                        if (!router.pathname.includes('login')) {
+                            router.replace('/login');
+                        }
+                    });
+            } else {
+                setLoading(false);
             }
-          })
-          .then(async response => {
-            setLoading(false)
-            setUser({ ...response.data.userData })
-          })
-          .catch(() => {
-            localStorage.removeItem('userData')
-            localStorage.removeItem('refreshToken')
-            localStorage.removeItem('accessToken')
-            setUser(null)
-            setLoading(false)
-            if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
-              router.replace('/login')
-            }
-          })
-      } else {
-        setLoading(false)
-      }
-    }
+        };
 
-    initAuth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+        initAuth();
+    }, []);
 
-  const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
-    axios
-      .post(authConfig.loginEndpoint, params)
-      .then(async response => {
-        params.rememberMe
-          ? window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.accessToken)
-          : null
-        const returnUrl = router.query.returnUrl
+    const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
+        loginAuth({ email: params.email, password: params.password })
+            .then(async (response) => {
+                if (params.rememberMe) {
+                    setLocalUserData(
+                        JSON.stringify(response.data.user),
+                        response.data.access_token,
+                        response.data.refresh_token
+                    );
+                } else {
+                    setTemporaryToken(response.data.access_token);
+                }
 
-        setUser({ ...response.data.userData })
-        params.rememberMe ? window.localStorage.setItem('userData', JSON.stringify(response.data.userData)) : null
+                toast.success(t('login_success'));
 
-        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
+                setLoading(false);
+                setUser({ ...response.data.user });
 
-        router.replace(redirectURL as string)
-      })
+                const returnUrl = router.query.returnUrl;
+                const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/';
+                router.replace(redirectURL as string);
+            })
 
-      .catch(err => {
-        if (errorCallback) errorCallback(err)
-      })
-  }
+            .catch((err) => {
+                if (errorCallback) {
+                    errorCallback(err);
+                }
+            });
+    };
 
-  const handleLogout = () => {
-    setUser(null)
-    window.localStorage.removeItem('userData')
-    window.localStorage.removeItem(authConfig.storageTokenKeyName)
-    router.push('/login')
-  }
+    const handleLogout = () => {
+        logoutAuth().then((res) => {
+            setUser(null);
 
-  const values = {
-    user,
-    loading,
-    setUser,
-    setLoading,
-    login: handleLogin,
-    logout: handleLogout
-  }
+            // Xóa các thông tin trong local storage khi đăng xuất
+            clearLocalUserData();
+            router.replace('/login');
+        });
+    };
 
-  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>
-}
+    const values = {
+        user,
+        loading,
+        setUser,
+        setLoading,
+        login: handleLogin,
+        logout: handleLogout,
+    };
 
-export { AuthContext, AuthProvider }
+    return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
+};
+
+export { AuthContext, AuthProvider };

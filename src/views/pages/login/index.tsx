@@ -11,12 +11,17 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { PASSWORD_REG } from 'src/configs/regex';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Icon from 'src/components/Icon';
 import Image from 'next/image';
 import { useTheme } from '@mui/material/styles';
 import LoginDark from '/public/images/login-dark.png';
 import LoginLight from '/public/images/login-light.png';
+
+// ** Hooks
+import { useAuth } from 'src/hooks/useAuth';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 type TProps = {};
 type TDefaultValue = {
@@ -29,9 +34,15 @@ const LoginPage: NextPage<TProps> = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isRemember, setIsRemember] = useState(true);
 
+    // Translation
+    const { t } = useTranslation();
+
+    // Context
+    const { login } = useAuth();
+
     const defaultValues: TDefaultValue = {
-        email: '',
-        password: '',
+        email: 'admin@gmail.com',
+        password: '123456789Kha@',
     };
 
     // Theme
@@ -52,16 +63,24 @@ const LoginPage: NextPage<TProps> = () => {
         handleSubmit,
         control,
         formState: { errors },
+        setError,
     } = useForm({
         defaultValues: defaultValues,
         mode: 'onBlur',
         resolver: yupResolver(schema),
     });
 
-    console.log('errors', { errors });
-
     const onSubmit = (data: { email: string; password: string }) => {
-        console.log('data', { data, errors });
+        if (!Object.keys(errors)?.length) {
+            // handleLogin (file AuthContext.tsx)
+            login({ ...data, rememberMe: isRemember }, (err) => {
+                // console.log('err', err);
+
+                if (err?.response?.data?.typeError === 'INVALID') {
+                    toast.error(t('the_email_or_password_wrong'));
+                }
+            });
+        }
     };
 
     return (
