@@ -25,5 +25,21 @@ gây ra lỗi (có thể là undefined hoặc là null => sẽ bị cảnh báo)
 
 -- **** Xong chương 5 sẽ coi lại redux trên youtube và coi lại toàn bộ luồng login, register và phân quyền
 
-video 29 14p03s
 
+Video về UI:
+- Chương 9: Video 5 - Xây UI cho table
+
+- Các video quan trọng về phân quyền - chương 9:
+    + video 9: Xây dựng UI cho bảng phân quyền
+    + video 10: Giải thích về luồng phân quyền ở API
+    + video 14: Xử lý phân quyền ở các trang trong hệ thống (28p45s có giải thích lại về phân quyền cho các trang)
+    + video 15: Xử lý phân quyền ở thanh menu (6p đầu tiên làm về active thanh sidebar dựa vào url)
+    + video 16: custom hook xử lý phân quyền (dùng để kiểm tra quyền CRUD của từng chức năng)
+
+
+- Tổ chức thư mục:
+    + Trong thư mục pages (các route dều vào thư mục này):
+        . Chia nhỏ thành các thư mục theo từng page: login, register,...
+        . Trong mỗi thư mục login, register... thì sẽ có file index.tsx để route chạy vào và thêm thư mục
+            components - chỉ chứa các components được dùng trong page đó
+    + Các hooks, components dùng chung cho toàn bộ dự án thì sẽ để trong các thư mục (nằm trong src)
