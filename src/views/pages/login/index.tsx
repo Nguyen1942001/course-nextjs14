@@ -265,7 +265,7 @@ const LoginPage: NextPage<TProps> = () => {
                             </Link>
                         </Box>
 
-                        {/*  Login google, facebook  */}
+                        {/*  Index google, facebook  */}
                         <Typography sx={{ textAlign: 'center', mt: 2, mb: 2 }}>Or</Typography>
                         <Box
                             sx={{

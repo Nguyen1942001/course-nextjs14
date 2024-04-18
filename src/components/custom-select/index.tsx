@@ -10,12 +10,19 @@ interface TCustomSelect extends SelectProps {
 
 const StyledSelect = styled(Select)<SelectProps>(({ theme }) => ({
     '& .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input': {
-        padding: '8px 8px 8px 10px',
+        padding: '4px 8px 8px 10px',
         height: '38px',
         boxSizing: 'border-box',
     },
     legend: {
         display: 'none',
+    },
+    '.MuiOutlinedInput-notchedOutline': {
+        top: '-4px',
+        bottom: '2px',
+    },
+    '.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium': {
+        top: 'calc(50% - .6em)',
     },
 }));
 
